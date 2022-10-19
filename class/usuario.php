@@ -56,6 +56,51 @@ class Usuario {
 
 	}
 
+	public static function getList(){     //não foi usada a palavra "$this", então este método pode ser estático com facilidade. O que na verdade significa que este método pode ser facilmente trabalhado dentro de qualquer escopo, pois não chama outros atributos ou variáveis
+
+		$sql = new Sql();
+
+		return $sql->select("SELECT * FROM tb_usuarios ORDER BY deslogin");
+
+	}
+
+	public static function search($login){
+
+		$sql = new Sql();
+
+		return $sql->select("SELECT * FROM tb_usuarios WHERE deslogin LIKE :SEARCH ORDER BY deslogin", array(
+			':SEARCH'=>"%".$login."%" //As "%" são para o recurso de busca poder pegar resultados similares, de alguma forma
+		));
+
+	}
+
+	public function login ($login, $password){    //Vamos amarrar muito na classe, então não tem como ser estática
+
+		$sql = new Sql();
+
+		$results = $sql->select("SELECT * FROM tb_usuarios WHERE deslogin = :LOGIN AND dessenha = :PASSWORD", array(
+			":LOGIN"=>$login,
+			":PASSWORD"=>$password
+		));
+
+		if (isset($results[0])){			//ou "if(count($results) > 0")
+
+			$row = $results[0];
+
+			$this->setIdusuario($row['idusuario']);
+			$this->setDeslogin($row['deslogin']);
+			$this->setDessenha($row['dessenha']);
+			$this->setDtcadastro(new DateTime($row['dtcadastro']));
+
+		} else {
+
+			throw new Exception ("Login e/ou senha inválidos.");
+
+		}
+
+
+	}
+
 	public function __toString(){
 
 		return json_encode(array(
