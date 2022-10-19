@@ -34,13 +34,19 @@ $aluno->setDeslogin("aluno");
 $aluno->setDessenha("@alun0"); */
 
 //Com método construtor
-/* $aluno = new Usuario();
+/* $aluno = new Usuario("aluno", "@alun0");
 $aluno->insert();
 echo $aluno; */
 
-$usuario = new Usuario();
+//Alterar um usuário
+/*$usuario = new Usuario();
 $usuario->loadById(6);
 $usuario->update("professor", "@1234#");
+echo $usuario; */
+
+$usuario = new Usuario();
+$usuario->loadById(3);
+$usuario->delete();
 echo $usuario;
 
 

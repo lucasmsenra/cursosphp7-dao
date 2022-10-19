@@ -129,6 +129,21 @@ class Usuario {
 
 	}
 
+	public function delete(){
+
+		$sql = new Sql();
+
+		$sql->query("DELETE FROM tb_usuarios WHERE idusuario = :ID", array( //O "FROM" aqui não vai asterisco antes, porque o "*" se refere à coluna, e aqui está se deletando a linha inteira
+			':ID'=>$this->getIdusuario()
+		));
+
+		$this->setIdusuario(0);
+		$this->setDeslogin(0);
+		$this->setDessenha(0);
+		$this->setDtcadastro(new DateTime()); //No exemplo colocaram estes "setters" mais para aparecer no echo depois como 0 mesmo. Não precisa para funcionar o delete!
+
+	}
+
 	public function __construct($login = "", $password = ""){  //O "" é para não dar erro caso o objeto seja instanciado sem informar as variáveis de login e senha 
 
 		$this->setDeslogin($login);
